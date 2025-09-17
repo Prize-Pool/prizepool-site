@@ -8,8 +8,9 @@ const PORT = process.env.PORT || 3001;
 // Enable CORS for frontend requests
 app.use(cors());
 
-// Helius RPC URL (replace with your API key)
-const HELIUS_URL = "https://mainnet.helius-rpc.com/?api-key=f82d4717-bccc-4000-87c9-9058dd0e19e3";
+// Your Helius RPC URL (replace API key with yours)
+const HELIUS_URL =
+  "https://mainnet.helius-rpc.com/?api-key=f82d4717-bccc-4000-87c9-9058dd0e19e3";
 
 // Health check
 app.get("/ping", (req, res) => {
@@ -29,22 +30,21 @@ app.get("/balance/:wallet/:mint", async (req, res) => {
         wallet,
         { mint },
         { encoding: "jsonParsed" }
-      ],
+      ]
     };
 
     const response = await fetch(HELIUS_URL, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(body),
+      body: JSON.stringify(body)
     });
 
     const data = await response.json();
 
     if (data.result?.value?.length > 0) {
-      const account = data.result.value[0].account.data.parsed.info;
-      const balance = account.tokenAmount.uiAmount;
-
-      return res.json({ balance });
+      const tokenAmount =
+        data.result.value[0].account.data.parsed.info.tokenAmount.uiAmount;
+      return res.json({ balance: tokenAmount });
     }
 
     res.json({ balance: 0 });
@@ -56,5 +56,5 @@ app.get("/balance/:wallet/:mint", async (req, res) => {
 
 // Start server
 app.listen(PORT, () => {
-  console.log(`✅ Backend running on http://localhost:${PORT}`);
+  console.log(`✅ Backend running on port ${PORT}`);
 });
