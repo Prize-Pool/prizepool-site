@@ -109,7 +109,7 @@ export default function App() {
           </div>
           <div className="p-6 bg-gray-50 rounded-2xl shadow-md">
             <h3 className="text-2xl mb-2">3️⃣ Win</h3>
-            <p>Every 3 days → 90% winner / 10% burned.</p>
+            <p>Everyday → 90% winner / 10% burned.</p>
           </div>
         </div>
       </section>
