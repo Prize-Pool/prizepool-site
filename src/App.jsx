@@ -1,5 +1,4 @@
 import { useState, useEffect } from "react";
-import { Connection, PublicKey } from "@solana/web3.js";
 
 export default function App() {
   // Countdown
@@ -28,22 +27,20 @@ export default function App() {
   const [loading, setLoading] = useState(false);
 
   const raffleWallet = "GzBRbP7HMxTSYYMGL1RBxJUmabU1ZYi7yPDq5GSrxCwh";
-  const tokenMint = "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v"; // TEMP: USDC for testing
-  const rpcUrl = "https://mainnet.helius-rpc.com/?api-key=f82d4717-bccc-4000-87c9-9058dd0e19e3";
+  const tokenMint = "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v"; // TEMP: USDC
+  const BACKEND_URL = "https://prizepool.onrender.com";
 
   const fetchBalance = async () => {
     setLoading(true);
     try {
-      const connection = new Connection(rpcUrl);
-      const accounts = await connection.getParsedTokenAccountsByOwner(
-        new PublicKey(raffleWallet),
-        { mint: new PublicKey(tokenMint) }
+      const response = await fetch(
+        `${BACKEND_URL}/balance/${raffleWallet}/${tokenMint}`
       );
+      const data = await response.json();
+      console.log("Backend response:", data);
 
-      if (accounts.value.length > 0) {
-        const tokenAmount =
-          accounts.value[0].account.data.parsed.info.tokenAmount.uiAmount;
-        setBalance(tokenAmount);
+      if (data.balance !== undefined) {
+        setBalance(data.balance);
       } else {
         setBalance(0);
       }
@@ -68,7 +65,7 @@ export default function App() {
           🎉 PrizePool
         </h1>
         <p className="text-2xl md:text-3xl mb-8 opacity-90">
-          Win Big. Burn Bigger.
+          Win. Burn. Hold.
         </p>
         <div className="flex gap-6 flex-wrap justify-center">
           <a
@@ -80,7 +77,7 @@ export default function App() {
             🚀 Buy on Pump.Fun
           </a>
           <a
-            href="https://x.com/"
+            href="https://x.com/PrizePool_Token"
             target="_blank"
             rel="noreferrer"
             className="bg-black text-white px-8 py-4 rounded-full text-xl shadow-lg hover:scale-105 transition"
