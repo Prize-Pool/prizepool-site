@@ -58,34 +58,42 @@ export default function App() {
   }, []);
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-blue-900 via-purple-800 to-yellow-500 text-white font-bold">
-      {/* Hero */}
-      <header className="flex flex-col items-center justify-center text-center h-screen px-4">
-        <h1 className="text-7xl md:text-8xl drop-shadow-xl mb-6 animate-bounce">
-          🎉 PrizePool
-        </h1>
-        <p className="text-2xl md:text-3xl mb-8 opacity-90">
-          Win. Burn. Hold.
-        </p>
-        <div className="flex gap-6 flex-wrap justify-center">
-          <a
-            href="https://pump.fun"
-            target="_blank"
-            rel="noreferrer"
-            className="bg-yellow-400 text-black px-8 py-4 rounded-full text-xl shadow-lg hover:scale-105 transition"
-          >
-            🚀 Buy on Pump.Fun
-          </a>
-          <a
-            href="https://x.com/PrizePool_Token"
-            target="_blank"
-            rel="noreferrer"
-            className="bg-black text-white px-8 py-4 rounded-full text-xl shadow-lg hover:scale-105 transition"
-          >
-            ✖ Follow on X
-          </a>
-        </div>
-      </header>
+  <div className="min-h-screen bg-gradient-to-b from-blue-900 via-purple-800 to-yellow-500 text-white font-bold overflow-hidden">
+    {/* Hero */}
+    <header className="relative flex flex-col items-center justify-center text-center h-screen px-4">
+      {/* Background mascot */}
+      <img
+        src="/mascot.png"
+        alt="PrizePool Mascot"
+        className="absolute w-[600px] h-auto opacity-20 z-0 pointer-events-none"
+        style={{ top: "30%", right: "-10%" }}
+      />
+
+      <h1 className="text-7xl md:text-8xl drop-shadow-xl mb-6 animate-bounce relative z-10">
+        🎉 PrizePool
+      </h1>
+      <p className="text-2xl md:text-3xl mb-8 opacity-90 relative z-10">
+        Win. Burn. Hold.
+      </p>
+      <div className="flex gap-6 flex-wrap justify-center relative z-10">
+        <a
+          href="https://pump.fun"
+          target="_blank"
+          rel="noreferrer"
+          className="bg-yellow-400 text-black px-8 py-4 rounded-full text-xl shadow-lg hover:scale-105 transition"
+        >
+          🚀 Buy on Pump.Fun
+        </a>
+        <a
+          href="https://x.com/PrizePool_Token"
+          target="_blank"
+          rel="noreferrer"
+          className="bg-black text-white px-8 py-4 rounded-full text-xl shadow-lg hover:scale-105 transition"
+        >
+          ✖ Follow on X
+        </a>
+      </div>
+    </header>
 
       {/* How it works */}
       <section className="bg-white text-black rounded-3xl max-w-5xl mx-auto p-10 shadow-2xl mb-16 text-center">
@@ -162,7 +170,9 @@ export default function App() {
         <div className="grid md:grid-cols-3 gap-6">
           <div className="bg-gray-50 p-6 rounded-2xl shadow-md">
             <h3 className="text-xl mb-2">How do I play?</h3>
-            <p>Buy PrizePool and send $POOL to the raffle wallet.</p>
+            <p>Buy PrizePool ($POOL) and send it to the raffle wallet.  
+            Each <b>50,000 $POOL = 1 raffle ticket</b>.  
+            The more you send, the more tickets you get!</p>
           </div>
           <div className="bg-gray-50 p-6 rounded-2xl shadow-md">
             <h3 className="text-xl mb-2">Is it fair?</h3>
