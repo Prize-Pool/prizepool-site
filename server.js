@@ -2,50 +2,59 @@ import express from "express";
 import fetch from "node-fetch";
 import cors from "cors";
 
-console.log("🚀 Starting PrizePool backend with REST mode only");
-
-
 const app = express();
-const PORT = 3001;
+const PORT = process.env.PORT || 3001;
 
-// Enable CORS
+// Enable CORS for frontend requests
 app.use(cors());
 
-// Helius API key
-const HELIUS_API_KEY = "f82d4717-bccc-4000-87c9-9058dd0e19e3";
+// Helius RPC URL (replace with your API key)
+const HELIUS_URL = "https://mainnet.helius-rpc.com/?api-key=f82d4717-bccc-4000-87c9-9058dd0e19e3";
 
-// Use REST balances API, not RPC
+// Health check
+app.get("/ping", (req, res) => {
+  res.json({ msg: "pong" });
+});
+
+// Balance endpoint
 app.get("/balance/:wallet/:mint", async (req, res) => {
   const { wallet, mint } = req.params;
 
   try {
-    const url = `https://api.helius.xyz/v0/addresses/${wallet}/balances?api-key=${HELIUS_API_KEY}`;
-    console.log("Fetching:", url);
+    const body = {
+      jsonrpc: "2.0",
+      id: "1",
+      method: "getTokenAccountsByOwner",
+      params: [
+        wallet,
+        { mint },
+        { encoding: "jsonParsed" }
+      ],
+    };
 
-    const response = await fetch(url);
+    const response = await fetch(HELIUS_URL, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(body),
+    });
+
     const data = await response.json();
 
-    // Debug log
-    console.log("Helius response:", data);
+    if (data.result?.value?.length > 0) {
+      const account = data.result.value[0].account.data.parsed.info;
+      const balance = account.tokenAmount.uiAmount;
 
-    if (!data.tokens) {
-      return res.json({ balance: 0 });
-    }
-
-    const token = data.tokens.find((t) => t.mint === mint);
-
-    if (token) {
-      const balance = token.amount / Math.pow(10, token.decimals);
       return res.json({ balance });
-    } else {
-      return res.json({ balance: 0 });
     }
+
+    res.json({ balance: 0 });
   } catch (err) {
-    console.error("Error:", err);
+    console.error("Error fetching balance:", err);
     res.status(500).json({ error: "Failed to fetch balance" });
   }
 });
 
+// Start server
 app.listen(PORT, () => {
   console.log(`✅ Backend running on http://localhost:${PORT}`);
 });
