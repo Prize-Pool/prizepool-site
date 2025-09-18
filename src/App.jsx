@@ -4,17 +4,15 @@ export default function App() {
   // Countdown
   const [timeLeft, setTimeLeft] = useState(0);
 
-  // Fixed next draw date (example: Sept 25, 2025 18:00 UTC)
   const NEXT_DRAW_DATE = new Date("2025-09-25T18:00:00Z");
 
   useEffect(() => {
     const tick = () => setTimeLeft(Math.max(0, NEXT_DRAW_DATE - new Date()));
-    tick(); // run immediately
+    tick();
     const interval = setInterval(tick, 1000);
     return () => clearInterval(interval);
   }, []);
 
-  // Format ms into d h m s
   const formatTime = (ms) => {
     const sec = Math.floor(ms / 1000);
     const d = Math.floor(sec / 86400);
@@ -23,7 +21,6 @@ export default function App() {
     const s = sec % 60;
     return `${d}d ${h}h ${m}m ${s}s`;
   };
-
 
   // Token balance
   const [balance, setBalance] = useState(0);
@@ -40,8 +37,6 @@ export default function App() {
         `${BACKEND_URL}/balance/${raffleWallet}/${tokenMint}`
       );
       const data = await response.json();
-      console.log("Backend response:", data);
-
       if (data.balance !== undefined) {
         setBalance(data.balance);
       } else {
@@ -55,48 +50,50 @@ export default function App() {
   };
 
   useEffect(() => {
-    fetchBalance(); // initial
-    const interval = setInterval(fetchBalance, 60000); // refresh every 60s
+    fetchBalance();
+    const interval = setInterval(fetchBalance, 60000);
     return () => clearInterval(interval);
   }, []);
 
-  return (
-  <div className="min-h-screen bg-gradient-to-b from-blue-900 via-purple-800 to-yellow-500 text-white font-bold overflow-hidden">
-    {/* Hero */}
-    <header className="relative flex flex-col items-center justify-center text-center h-screen px-4">
-      {/* Background mascot */}
-      <img
-        src="/mascot.png"
-        alt="PrizePool Mascot"
-        className="absolute w-[600px] h-auto opacity-20 z-0 pointer-events-none"
-        style={{ top: "30%", right: "-10%" }}
-      />
+  // 🔥 Burn tracker (manual update here in code)
+  const burned = 0; // Example: 1.25M burned
 
-      <h1 className="text-7xl md:text-8xl drop-shadow-xl mb-6 animate-bounce relative z-10">
-        🎉 PrizePool
-      </h1>
-      <p className="text-2xl md:text-3xl mb-8 opacity-90 relative z-10">
-        Win. Burn. Hold.
-      </p>
-      <div className="flex gap-6 flex-wrap justify-center relative z-10">
-        <a
-          href="https://pump.fun"
-          target="_blank"
-          rel="noreferrer"
-          className="bg-yellow-400 text-black px-8 py-4 rounded-full text-xl shadow-lg hover:scale-105 transition"
-        >
-          🚀 Buy on Pump.Fun
-        </a>
-        <a
-          href="https://x.com/PrizePool_Token"
-          target="_blank"
-          rel="noreferrer"
-          className="bg-black text-white px-8 py-4 rounded-full text-xl shadow-lg hover:scale-105 transition"
-        >
-          ✖ Follow on X
-        </a>
-      </div>
-    </header>
+  return (
+    <div className="min-h-screen bg-gradient-to-b from-blue-900 via-purple-800 to-yellow-500 text-white font-bold overflow-hidden">
+      {/* Hero */}
+      <header className="relative flex flex-col items-center justify-center text-center h-screen px-4">
+        <img
+          src="/mascot.png"
+          alt="PrizePool Mascot"
+          className="absolute w-[600px] h-auto opacity-20 z-0 pointer-events-none"
+          style={{ top: "30%", right: "-10%" }}
+        />
+
+        <h1 className="text-7xl md:text-8xl drop-shadow-xl mb-6 animate-bounce relative z-10">
+          🎉 PrizePool
+        </h1>
+        <p className="text-2xl md:text-3xl mb-8 opacity-90 relative z-10">
+          Win. Burn. Hold.
+        </p>
+        <div className="flex gap-6 flex-wrap justify-center relative z-10">
+          <a
+            href="https://pump.fun"
+            target="_blank"
+            rel="noreferrer"
+            className="bg-yellow-400 text-black px-8 py-4 rounded-full text-xl shadow-lg hover:scale-105 transition"
+          >
+            🚀 Buy on Pump.Fun
+          </a>
+          <a
+            href="https://x.com/PrizePool_Token"
+            target="_blank"
+            rel="noreferrer"
+            className="bg-black text-white px-8 py-4 rounded-full text-xl shadow-lg hover:scale-105 transition"
+          >
+            ✖ Follow on X
+          </a>
+        </div>
+      </header>
 
       {/* How it works */}
       <section className="bg-white text-black rounded-3xl max-w-5xl mx-auto p-10 shadow-2xl mb-16 text-center">
@@ -135,6 +132,10 @@ export default function App() {
           Current Pool:{" "}
           <b>{loading ? "Refreshing..." : `${balance.toLocaleString()} $POOL`}</b>
         </p>
+
+        {/* 🔥 Burn total */}
+        <p className="mb-3 text-lg">🔥 Total Burned: {burned.toLocaleString()} $POOL</p>
+
         <button
           onClick={fetchBalance}
           className="mt-3 bg-yellow-400 text-black px-6 py-2 rounded-full shadow hover:scale-105 transition"
@@ -173,9 +174,11 @@ export default function App() {
         <div className="grid md:grid-cols-3 gap-6">
           <div className="bg-gray-50 p-6 rounded-2xl shadow-md">
             <h3 className="text-xl mb-2">How do I play?</h3>
-            <p>Buy PrizePool ($POOL) and send it to the raffle wallet.  
-            Each <b>50,000 $POOL = 1 raffle ticket</b>.  
-            The more you send, the more tickets you get!</p>
+            <p>
+              Buy PrizePool ($POOL) and send it to the raffle wallet.  
+              Each <b>50,000 $POOL = 1 raffle ticket</b>.  
+              The more you send, the more tickets you get!
+            </p>
           </div>
           <div className="bg-gray-50 p-6 rounded-2xl shadow-md">
             <h3 className="text-xl mb-2">Is it fair?</h3>
@@ -188,9 +191,10 @@ export default function App() {
         </div>
       </section>
 
+      {/* Footer */}
       <footer className="text-center text-sm py-6 bg-black">
         © 2025 PrizePool •{" "}
-        <a href="https://x.com/" className="underline">
+        <a href="https://x.com/PrizePool_Token" className="underline">
           Follow on X
         </a>
       </footer>
