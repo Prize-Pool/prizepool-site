@@ -4,15 +4,17 @@ export default function App() {
   // Countdown
   const [timeLeft, setTimeLeft] = useState(0);
 
+  // Fixed next draw date (example: Sept 25, 2025 18:00 UTC)
+  const NEXT_DRAW_DATE = new Date("2025-09-25T18:00:00Z");
+
   useEffect(() => {
-    const nextDraw = new Date();
-    nextDraw.setDate(nextDraw.getDate() + 3);
-    const tick = () => setTimeLeft(Math.max(0, nextDraw - new Date()));
-    tick();
+    const tick = () => setTimeLeft(Math.max(0, NEXT_DRAW_DATE - new Date()));
+    tick(); // run immediately
     const interval = setInterval(tick, 1000);
     return () => clearInterval(interval);
   }, []);
 
+  // Format ms into d h m s
   const formatTime = (ms) => {
     const sec = Math.floor(ms / 1000);
     const d = Math.floor(sec / 86400);
@@ -21,6 +23,7 @@ export default function App() {
     const s = sec % 60;
     return `${d}d ${h}h ${m}m ${s}s`;
   };
+
 
   // Token balance
   const [balance, setBalance] = useState(0);
