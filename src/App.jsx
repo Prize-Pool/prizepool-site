@@ -4,10 +4,10 @@ export default function App() {
   // Countdown
   const [timeLeft, setTimeLeft] = useState(0);
 
-  const NEXT_DRAW_DATE = new Date("2025-09-25T18:00:00Z");
+  const NEXT_LAUNCH_DATE = new Date("2025-09-25T18:00:00Z");
 
   useEffect(() => {
-    const tick = () => setTimeLeft(Math.max(0, NEXT_DRAW_DATE - new Date()));
+    const tick = () => setTimeLeft(Math.max(0, NEXT_LAUNCH_DATE - new Date()));
     tick();
     const interval = setInterval(tick, 1000);
     return () => clearInterval(interval);
@@ -55,8 +55,8 @@ export default function App() {
     return () => clearInterval(interval);
   }, []);
 
-  // 🔥 Burn tracker (manual update here in code)
-  const burned = 0; // Example: 1.25M burned
+  // 🔥 Burn tracker (manual)
+  const burned = 1250000; // Example: 1.25M burned
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-blue-900 via-purple-800 to-yellow-500 text-white font-bold overflow-hidden">
@@ -92,27 +92,16 @@ export default function App() {
           >
             ✖ Follow on X
           </a>
+          <a
+            href="https://t.me/prizepoolchat"
+            target="_blank"
+            rel="noreferrer"
+            className="bg-blue-400 text-white px-8 py-4 rounded-full text-xl shadow-lg hover:scale-105 transition"
+          >
+            👥 Join Community
+          </a>
         </div>
       </header>
-
-      {/* How it works */}
-      <section className="bg-white text-black rounded-3xl max-w-5xl mx-auto p-10 shadow-2xl mb-16 text-center">
-        <h2 className="text-4xl mb-6">📜 How It Works</h2>
-        <div className="grid md:grid-cols-3 gap-8">
-          <div className="p-6 bg-gray-50 rounded-2xl shadow-md">
-            <h3 className="text-2xl mb-2">1️⃣ Buy</h3>
-            <p>Get PrizePool tokens ($POOL).</p>
-          </div>
-          <div className="p-6 bg-gray-50 rounded-2xl shadow-md">
-            <h3 className="text-2xl mb-2">2️⃣ Enter</h3>
-            <p>Send $POOL to the raffle wallet.</p>
-          </div>
-          <div className="p-6 bg-gray-50 rounded-2xl shadow-md">
-            <h3 className="text-2xl mb-2">3️⃣ Win</h3>
-            <p>Everyday → 90% winner / 10% burned.</p>
-          </div>
-        </div>
-      </section>
 
       {/* Live raffle */}
       <section className="text-center max-w-4xl mx-auto mb-16 px-4">
@@ -133,7 +122,7 @@ export default function App() {
           <b>{loading ? "Refreshing..." : `${balance.toLocaleString()} $POOL`}</b>
         </p>
 
-        {/* 🔥 Burn total */}
+        {/* 🔥 Burn total only */}
         <p className="mb-3 text-lg">🔥 Total Burned: {burned.toLocaleString()} $POOL</p>
 
         <button
@@ -142,7 +131,7 @@ export default function App() {
         >
           🔄 Refresh
         </button>
-        <p className="text-2xl mt-6">Next Draw In: {formatTime(timeLeft)}</p>
+        <p className="text-2xl mt-6">⏳ Time to Launch: {formatTime(timeLeft)}</p>
       </section>
 
       {/* Past winners */}
@@ -175,9 +164,8 @@ export default function App() {
           <div className="bg-gray-50 p-6 rounded-2xl shadow-md">
             <h3 className="text-xl mb-2">How do I play?</h3>
             <p>
-              Buy PrizePool ($POOL) and send it to the raffle wallet.  
-              Each <b>50,000 $POOL = 1 raffle ticket</b>.  
-              The more you send, the more tickets you get!
+              Buy PrizePool ($POOL) and send it to the raffle wallet.
+              Each <b>50,000 $POOL = 1 raffle ticket</b>.
             </p>
           </div>
           <div className="bg-gray-50 p-6 rounded-2xl shadow-md">
@@ -191,7 +179,6 @@ export default function App() {
         </div>
       </section>
 
-      {/* Footer */}
       <footer className="text-center text-sm py-6 bg-black">
         © 2025 PrizePool •{" "}
         <a href="https://x.com/PrizePool_Token" className="underline">
@@ -201,3 +188,4 @@ export default function App() {
     </div>
   );
 }
+
